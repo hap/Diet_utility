@@ -27,6 +27,7 @@ bool window::databaseOn(QString dbname){
     return db->isValid();
 }
 void window::b_press(){
+    QSqlQuery q;
 
 }
 window::~window()
