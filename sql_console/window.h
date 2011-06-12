@@ -9,6 +9,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSqlDatabase>
+#include <QtSql>
+#include <QTableView>
 
 
 class window : public QWidget
@@ -18,15 +20,17 @@ class window : public QWidget
 public:
     explicit window(QWidget *parent = 0);
     ~window();
-
+private slots:
+    void b_slot();
 private:
     QSqlDatabase *db;
     bool databaseOn(QString);
-    QGridLayout *lay;
-    QLabel *panel;
+    QSqlQueryModel *modelSelect;
+    QTableView *viewSelect;
     QLineEdit *edit;
     QPushButton *b;
-    void b_press();
+
+    void execSQL();
 
 };
 
