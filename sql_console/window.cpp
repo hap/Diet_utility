@@ -25,10 +25,16 @@ window::window(QWidget *parent) :
     lay->addWidget(label2,0,0);
 
     edit = new QLineEdit;
-    lay->addWidget(edit,5,0);
+    lay->addWidget(edit,5,0,1,3);
 
     b = new QPushButton(tr("Do"));
     lay->addWidget(b,5,3);
+
+    QLabel *label3 = new QLabel(tr("Log: "));
+    lay->addWidget(label3,6,0);
+
+    log = new QLabel(tr(""));
+    lay->addWidget(log,6,1);
 
     this->setLayout(lay);
 
@@ -48,19 +54,17 @@ void window::execSQL()
 {
     QSqlQuery q;
     if(!q.exec((edit->text()))){
-        qDebug()<<q.lastError().text();
+        log->setText(q.lastError().text());
         modelSelect->clear();
+
         return;
     }
 
     if(q.isSelect()){
         modelSelect->setQuery(q);
     }
-    // QRegExp reg("^(select|SELECT|sElect|Select|seLect|selEct|seleCt|selecT)");
-  //  QString str(&edit->text()) ;
-  //  if(str.trimmed().contains(reg)){
 
-  //  }
+    log->setText(tr("Complete successful"));
 
 
 }
@@ -69,6 +73,7 @@ void window::b_slot()
 {
    execSQL();
    edit->clear();
+   edit->setFocus();
 
 }
 

@@ -29,6 +29,7 @@ private:
     QTableView *viewSelect;
     QLineEdit *edit;
     QPushButton *b;
+    QLabel *log;
 
     void execSQL();
 
