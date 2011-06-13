@@ -5,7 +5,7 @@ window::window(QWidget *parent) :
     QWidget(parent)
 
 {
-   // qDebug()<<QSqlDatabase::drivers();
+
     if (!databaseOn(QString("test.db"))) {qDebug()<<db.lastError().text(); QApplication::exit(-1);}
     else {qDebug()<<"Database is on now!"<<endl;}
 
@@ -75,7 +75,7 @@ void window::b_slot()
 window::~window()
 {
     db.close();
-    //delete db;
+
     delete modelSelect;
 
 }
