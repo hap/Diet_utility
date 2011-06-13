@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       +=   sql
+QT += sql
 
 TARGET = sql_console
 TEMPLATE = app
@@ -13,6 +13,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         window.cpp
 
-HEADERS  += window.h
+HEADERS += window.h
 
-FORMS    +=
+FORMS +=
+
+

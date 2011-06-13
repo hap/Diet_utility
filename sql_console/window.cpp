@@ -40,6 +40,8 @@ window::window(QWidget *parent) :
 
     connect(b,SIGNAL(clicked()),this,SLOT(b_slot()));
 
+
+
 }
 
 bool window::databaseOn(QString dbname){
@@ -56,6 +58,7 @@ void window::execSQL()
     if(!q.exec((edit->text()))){
         log->setText(q.lastError().text());
         modelSelect->setQuery("");
+        this->startTimer(10000);
         return;
     }
 
@@ -64,7 +67,7 @@ void window::execSQL()
     }
 
     log->setText(tr("Complete successful"));
-
+    this->startTimer(10000);
 
 }
 
@@ -102,6 +105,13 @@ void window::keyPressEvent( QKeyEvent *event )
   }
 
     QWidget::keyPressEvent(event);
+}
+
+void window::timerEvent ( QTimerEvent * event )
+{
+    log->clear();
+    this->killTimer(event->timerId());
+    return;
 }
 
 window::~window()

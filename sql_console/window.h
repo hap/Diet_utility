@@ -34,6 +34,7 @@ private:
 
     void execSQL();
 protected:
+    virtual void timerEvent ( QTimerEvent *   );
     virtual void keyPressEvent ( QKeyEvent *  );
 
 };
