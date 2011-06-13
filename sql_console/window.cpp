@@ -5,7 +5,8 @@ window::window(QWidget *parent) :
     QWidget(parent)
 
 {
-    if (!databaseOn(QString("test.db"))) {qDebug()<<(db->lastError()).text(); QApplication::exit(-1);}
+   // qDebug()<<QSqlDatabase::drivers();
+    if (!databaseOn(QString("test.db"))) {qDebug()<<db.lastError().text(); QApplication::exit(-1);}
     else {qDebug()<<"Database is on now!"<<endl;}
 
     modelSelect = new QSqlQueryModel;
@@ -36,11 +37,11 @@ window::window(QWidget *parent) :
 }
 
 bool window::databaseOn(QString dbname){
-    db = new QSqlDatabase();
-    db->addDatabase("QSQLITE");
-    db->setDatabaseName(dbname);
-    db->open();
-    return db->isValid();
+    db = QSqlDatabase::addDatabase("QSQLITE") ;
+
+    db.setDatabaseName(dbname);
+    db.open();
+    return db.isValid();
 }
 
 void window::execSQL()
@@ -73,8 +74,8 @@ void window::b_slot()
 
 window::~window()
 {
-    db->close();
-    delete db;
+    db.close();
+    //delete db;
     delete modelSelect;
 
 }

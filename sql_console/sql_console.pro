@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       +=   sql
 
 TARGET = sql_console
 TEMPLATE = app

@@ -23,7 +23,7 @@ public:
 private slots:
     void b_slot();
 private:
-    QSqlDatabase *db;
+    QSqlDatabase db;
     bool databaseOn(QString);
     QSqlQueryModel *modelSelect;
     QTableView *viewSelect;
