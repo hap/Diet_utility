@@ -10,7 +10,7 @@ window::window(QWidget *parent) :
     else {qDebug()<<"Database is on now!"<<endl;}
 
     modelSelect = new QSqlQueryModel;
-
+    modelSelect->setQuery("");
 
     QGridLayout *lay = new QGridLayout;
 
@@ -55,8 +55,7 @@ void window::execSQL()
     QSqlQuery q;
     if(!q.exec((edit->text()))){
         log->setText(q.lastError().text());
-        modelSelect->clear();
-
+        modelSelect->setQuery("");
         return;
     }
 
