@@ -77,6 +77,34 @@ void window::b_slot()
 
 }
 
+void window::keyPressEvent( QKeyEvent *event )
+{
+
+
+    if(this->focusWidget()==qobject_cast<QWidget*>(edit)){
+
+        if( event->key()+1 == Qt::Key_Enter ){
+           qDebug()<<"enter";
+           this->b_slot();return;
+         }
+
+        if( event->key() == Qt::Key_Down ){
+           qDebug()<<"down";
+           edit->undo();
+           return;
+        }
+
+        if( event->key() == Qt::Key_Up ){
+           qDebug()<<"Up";
+           edit->redo();
+           return;
+        }
+
+  }
+
+    QWidget::keyPressEvent(event);
+}
+
 window::~window()
 {
     db.close();

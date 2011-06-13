@@ -11,6 +11,7 @@
 #include <QSqlDatabase>
 #include <QtSql>
 #include <QTableView>
+#include <QKeyEvent>
 
 
 class window : public QWidget
@@ -32,6 +33,8 @@ private:
     QLabel *log;
 
     void execSQL();
+protected:
+    virtual void keyPressEvent ( QKeyEvent *  );
 
 };
 
