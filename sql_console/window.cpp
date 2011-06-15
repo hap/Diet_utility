@@ -40,6 +40,58 @@ window::window(QWidget *parent) :
 
     connect(b,SIGNAL(clicked()),this,SLOT(b_slot()));
 
+    QSqlQuery q;
+    if(!q.exec("create table if not exists photo (id integer primary key autoincrement, body blob);")){
+        log->setText(q.lastError().text());
+        modelSelect->setQuery("");
+        this->startTimer(10000);
+        qDebug()<<"11";
+        return;
+    }
+
+
+
+    QPixmap pix("Nokia-QtCreator-64.png");
+    QByteArray bytes;
+    QBuffer buffer(&bytes);
+    buffer.open(QIODevice::WriteOnly);
+    pix.save(&buffer, "PNG");
+
+    qDebug()<<bytes.data();
+    QString str="insert into photo(body) values('%1');";
+    str=str.arg(bytes.data());
+
+
+    if(!q.exec(str)){
+        log->setText(q.lastError().text());
+        modelSelect->setQuery("");
+        this->startTimer(10000);
+        qDebug()<<"12";
+        return;
+    }
+
+
+    if(!q.exec("select * from photo;")){
+        log->setText(q.lastError().text());
+        modelSelect->setQuery("");
+        this->startTimer(10000);
+        qDebug()<<"13";
+        return;
+    }
+
+
+
+
+
+    if(q.isSelect()){
+        modelSelect->setQuery(q);
+        viewSelect->setItemDelegateForColumn(1,new pixDelegate(this));
+    }
+
+    log->setText(tr("Complete successful"));
+    this->startTimer(10000);
+
+
 
 
 }
@@ -121,3 +173,48 @@ window::~window()
     delete modelSelect;
 
 }
+
+
+QWidget* pixDelegate::createEditor(QWidget *parent,
+     const QStyleOptionViewItem &  option  ,
+     const QModelIndex &  index  )   const
+ {
+     QLabel *editor = new QLabel(parent);
+
+
+
+     return editor;
+ }
+
+  void pixDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+                                    const QModelIndex &index) const
+ {
+     QLabel *edit = static_cast<QLabel*>(editor);
+
+         const QPixmap *p=edit->pixmap();
+
+         QByteArray bytes;
+         QBuffer buffer(&bytes);
+         buffer.open(QIODevice::WriteOnly);
+         p->save(&buffer, "PNG");
+
+
+
+
+
+         model->setData(index, bytes.data() , Qt::DecorationRole);
+ }
+
+ void pixDelegate::setEditorData(QWidget *editor,
+                                     const QModelIndex &index) const
+ {
+         QByteArray value = index.model()->data(index, Qt::EditRole).toByteArray() ;
+
+         QPixmap p;
+           p.loadFromData(value,"PNG");
+
+     QLabel *edit = static_cast<QLabel*>(editor);
+         edit->setPixmap(p);;
+
+
+ }
