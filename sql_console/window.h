@@ -12,6 +12,7 @@
 #include <QtSql>
 #include <QTableView>
 #include <QKeyEvent>
+#include <QMessageBox>
 
 
 class window : public QWidget
@@ -48,7 +49,7 @@ class pixDelegate : public QItemDelegate
      pixDelegate(QObject *parent = 0): QItemDelegate(parent)
     {
     }
-
+/*
      QWidget  *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                            const QModelIndex &index) const;
 
@@ -57,6 +58,10 @@ class pixDelegate : public QItemDelegate
                        const QModelIndex &index) const;
 
      void  setEditorData(QWidget *editor,const QModelIndex &index) const;
+*/
+
+     void  paint(QPainter *painter, const QStyleOptionViewItem &option,
+                                 const QModelIndex &index) const;
 
 
  };

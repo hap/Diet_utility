@@ -51,16 +51,22 @@ window::window(QWidget *parent) :
 
 
 
-    QPixmap pix("Nokia-QtCreator-64.png");
+    QPixmap pix("/home/vadim/Diet_utility/Diet_utility/sql_console/Nokia-QtCreator-64.png");
+
     QByteArray bytes;
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
     pix.save(&buffer, "PNG");
 
-    qDebug()<<bytes.data();
-    QString str="insert into photo(body) values('%1');";
-    str=str.arg(bytes.data());
 
+   // QPixmap p;
+ //     p.loadFromData(bytes,"PNG");
+  //  label1->setPixmap(p);
+
+    QString str="insert into photo(body) values('%1');";
+
+    str=str.arg(bytes.data() );
+    qDebug()<<bytes ;
 
     if(!q.exec(str)){
         log->setText(q.lastError().text());
@@ -84,8 +90,10 @@ window::window(QWidget *parent) :
 
 
     if(q.isSelect()){
-        modelSelect->setQuery(q);
         viewSelect->setItemDelegateForColumn(1,new pixDelegate(this));
+        modelSelect->setQuery(q);
+
+
     }
 
     log->setText(tr("Complete successful"));
@@ -174,13 +182,15 @@ window::~window()
 
 }
 
-
+/*
 QWidget* pixDelegate::createEditor(QWidget *parent,
      const QStyleOptionViewItem &  option  ,
      const QModelIndex &  index  )   const
  {
      QLabel *editor = new QLabel(parent);
-
+ qDebug()<<"11";
+    //QMessageBox::critical(editor,QString("!!"),QString("sss"));
+     this->setEditorData(editor,index);
 
 
      return editor;
@@ -208,13 +218,35 @@ QWidget* pixDelegate::createEditor(QWidget *parent,
  void pixDelegate::setEditorData(QWidget *editor,
                                      const QModelIndex &index) const
  {
-         QByteArray value = index.model()->data(index, Qt::EditRole).toByteArray() ;
+     QByteArray value = index.model()->data(index, Qt::DisplayRoleQt::DecorationRole/).toByteArray() ;
 
          QPixmap p;
            p.loadFromData(value,"PNG");
+           QMessageBox::critical(editor,QString("!!"),QString(value));
 
      QLabel *edit = static_cast<QLabel*>(editor);
          edit->setPixmap(p);;
 
 
  }
+
+ */
+
+ void pixDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+                             const QModelIndex &index) const
+  {
+
+      QByteArray value = index.data(Qt::DisplayRole) .toByteArray() ;
+    // qDebug()<<index.data(Qt::DisplayRole).toByteArray();
+
+     QPixmap p;
+       p.loadFromData( value ,"PNG");
+
+
+    QApplication::style()->drawItemPixmap(painter,option.rect,Qt::AlignHCenter,p );
+
+
+
+
+  }
+
